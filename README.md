@@ -1,2 +1,3 @@
-# graphql_nextlevel
-this is based on my second tutorial
+28-March-2019
+Add nested queries
+Add custom property type resolvers
