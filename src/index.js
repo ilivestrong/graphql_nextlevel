@@ -1,15 +1,16 @@
 import { GraphQLServer } from 'graphql-yoga'
+import uuidv4 from 'uuid/v4'
 
 const user1 = {
     id: "1", name: 'Deepak Pathak', age: 35, address: 'Bangkok, Thailand'
 }
 
 const user2 = {
-   id: "2", name: 'Kishore Pathak', age: 31, address: 'New Delhi, India'
+    id: "2", name: 'Kishore Pathak', age: 31, address: 'New Delhi, India'
 }
 
 const posts = [
-    { id: '1', title: 'Post 1', body: 'This is Post 1', published: true, author:  "1"},
+    { id: '1', title: 'Post 1', body: 'This is Post 1', published: true, author: "1" },
     { id: '2', title: 'Post 2', body: 'This is Post 2', published: true, author: "2" },
     { id: '3', title: 'Post 3', body: 'This is Post 3', published: true, author: "1" },
     { id: '4', title: 'Post 4', body: 'This is Post 4', published: true, author: "1" }
@@ -29,6 +30,10 @@ const typeDefs = `
         posts: [Post!]!
     }
 
+    type Mutation {
+        addPost(data: newPost): Post!
+    }
+
     type User {
         id: ID!
         name: String!
@@ -43,6 +48,13 @@ const typeDefs = `
         body: String!
         published: Boolean!
         author: User!
+    }
+
+    input newPost {
+        title: String!
+        body: String!
+        published: Boolean
+        author: String!
     }
 `
 
@@ -71,6 +83,27 @@ const resolvers = {
         },
         posts() {
             return posts
+        }
+    },
+    Mutation: {
+        addPost(parent, {data}, ctx, info) {
+
+            if(!users.some((user) => user.id === data.author)) {
+                throw new Error(`The user mentioned with this post doesn't exists: ID: ${data.author}`)
+            }
+
+            if (posts.some((post) => post.title === data.title)) {
+                throw new Error(`A post with title: ${data.title} already exists. Please choose a diffferent title.`)
+            }
+
+            const newPost =
+            {
+                id:  uuidv4(),
+                ...data
+            }
+            posts.push(newPost)
+
+            return newPost
         }
     },
     Post: {
