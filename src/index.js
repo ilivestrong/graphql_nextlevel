@@ -20,43 +20,7 @@ const posts = [
 
 const users = [user1, user2]
 
-const typeDefs = `
-    type Query {
-        hello: String!
-        name: String!
-        me: User!
-        add(numbers: [Float!]!): Float!
-        users: [User!]!
-        posts: [Post!]!
-    }
 
-    type Mutation {
-        addPost(data: newPost): Post!
-    }
-
-    type User {
-        id: ID!
-        name: String!
-        age: Int!
-        address: String
-        posts : [Post!]
-    }
-
-    type Post {
-        id: ID!
-        title : String!
-        body: String!
-        published: Boolean!
-        author: User!
-    }
-
-    input newPost {
-        title: String!
-        body: String!
-        published: Boolean
-        author: String!
-    }
-`
 
 const resolvers = {
     Query: {
@@ -119,7 +83,7 @@ const resolvers = {
 }
 
 const server = new GraphQLServer({
-    typeDefs,
+    typeDefs: './src/schema.graphql',
     resolvers
 })
     .start(() => console.log('The GraphQL server is up and running!'))
