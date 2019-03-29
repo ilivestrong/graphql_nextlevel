@@ -31,7 +31,7 @@ const typeDefs = `
     }
 
     type Mutation {
-        addPost(title: String!, body: String!, published: Boolean = false, author: String!): Post!
+        addPost(data: newPost): Post!
     }
 
     type User {
@@ -48,6 +48,13 @@ const typeDefs = `
         body: String!
         published: Boolean!
         author: User!
+    }
+
+    input newPost {
+        title: String!
+        body: String!
+        published: Boolean
+        author: String!
     }
 `
 
@@ -79,20 +86,20 @@ const resolvers = {
         }
     },
     Mutation: {
-        addPost(parent, args, ctx, info) {
+        addPost(parent, {data}, ctx, info) {
 
-            if(!users.some((user) => user.id === args.author)) {
-                throw new Error(`The user mentioned with this post doesn't exists: ID: ${args.author}`)
+            if(!users.some((user) => user.id === data.author)) {
+                throw new Error(`The user mentioned with this post doesn't exists: ID: ${data.author}`)
             }
 
-            if (posts.some((post) => post.title === args.title)) {
-                throw new Error(`A post with title: ${args.title} already exists. Please choose a diffferent title.`)
+            if (posts.some((post) => post.title === data.title)) {
+                throw new Error(`A post with title: ${data.title} already exists. Please choose a diffferent title.`)
             }
 
             const newPost =
             {
                 id:  uuidv4(),
-                ...args
+                ...data
             }
             posts.push(newPost)
 
