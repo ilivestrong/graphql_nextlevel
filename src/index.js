@@ -1,15 +1,16 @@
 import { GraphQLServer } from 'graphql-yoga'
+import uuidv4 from 'uuid/v4'
 
 const user1 = {
     id: "1", name: 'Deepak Pathak', age: 35, address: 'Bangkok, Thailand'
 }
 
 const user2 = {
-   id: "2", name: 'Kishore Pathak', age: 31, address: 'New Delhi, India'
+    id: "2", name: 'Kishore Pathak', age: 31, address: 'New Delhi, India'
 }
 
 const posts = [
-    { id: '1', title: 'Post 1', body: 'This is Post 1', published: true, author:  "1"},
+    { id: '1', title: 'Post 1', body: 'This is Post 1', published: true, author: "1" },
     { id: '2', title: 'Post 2', body: 'This is Post 2', published: true, author: "2" },
     { id: '3', title: 'Post 3', body: 'This is Post 3', published: true, author: "1" },
     { id: '4', title: 'Post 4', body: 'This is Post 4', published: true, author: "1" }
@@ -27,6 +28,10 @@ const typeDefs = `
         add(numbers: [Float!]!): Float!
         users: [User!]!
         posts: [Post!]!
+    }
+
+    type Mutation {
+        addPost(title: String!, body: String!, published: Boolean = false, author: String!): Post!
     }
 
     type User {
@@ -71,6 +76,27 @@ const resolvers = {
         },
         posts() {
             return posts
+        }
+    },
+    Mutation: {
+        addPost(parent, args, ctx, info) {
+
+            if(!users.some((user) => user.id === args.author)) {
+                throw new Error(`The user mentioned with this post doesn't exists: ID: ${args.author}`)
+            }
+
+            if (posts.some((post) => post.title === args.title)) {
+                throw new Error(`A post with title: ${args.title} already exists. Please choose a diffferent title.`)
+            }
+
+            const newPost =
+            {
+                id:  uuidv4(),
+                ...args
+            }
+            posts.push(newPost)
+
+            return newPost
         }
     },
     Post: {
