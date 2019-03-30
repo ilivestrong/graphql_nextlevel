@@ -17,6 +17,9 @@ const Mutation = {
             id: uuidv4(),
             ...data
         }
+
+        newPost.archived = 'NO'
+
         db.posts.push(newPost)
 
         console.log(`db.users: ${db.users}`)

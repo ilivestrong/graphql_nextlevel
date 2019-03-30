@@ -30,6 +30,7 @@ type Query {
         body: String!
         published: Boolean!
         author: User!
+        archived: ArchiveType
     }
 
     input newPost {
@@ -37,4 +38,9 @@ type Query {
         body: String!
         published: Boolean
         author: String!
+    }
+
+    enum ArchiveType {
+        YES
+        NO
     }

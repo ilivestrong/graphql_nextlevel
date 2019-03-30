@@ -12,3 +12,4 @@ Refactor typedefs, data file, resolvers into their respective folder and files
 30-March-2019
 Add basic subscription implementation - randomValue
 Add getPostAuthor subscription
+Use GraphQL enum type
