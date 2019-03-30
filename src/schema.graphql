@@ -11,6 +11,10 @@ type Query {
         addPost(data: newPost): Post!
     }
 
+    type Subscription {
+        randomValue: ID
+    }
+
     type User {
         id: ID!
         name: String!
