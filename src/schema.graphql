@@ -1,0 +1,35 @@
+type Query {
+        hello: String!
+        name: String!
+        me: User!
+        add(numbers: [Float!]!): Float!
+        users: [User!]!
+        posts: [Post!]!
+    }
+
+    type Mutation {
+        addPost(data: newPost): Post!
+    }
+
+    type User {
+        id: ID!
+        name: String!
+        age: Int!
+        address: String
+        posts : [Post!]
+    }
+
+    type Post {
+        id: ID!
+        title : String!
+        body: String!
+        published: Boolean!
+        author: User!
+    }
+
+    input newPost {
+        title: String!
+        body: String!
+        published: Boolean
+        author: String!
+    }
