@@ -11,6 +11,11 @@ type Query {
         addPost(data: newPost): Post!
     }
 
+    type Subscription {
+        randomValue: ID
+        getNewPostAuthor: User
+    }
+
     type User {
         id: ID!
         name: String!
@@ -25,6 +30,7 @@ type Query {
         body: String!
         published: Boolean!
         author: User!
+        archived: ArchiveType
     }
 
     input newPost {
@@ -32,4 +38,9 @@ type Query {
         body: String!
         published: Boolean
         author: String!
+    }
+
+    enum ArchiveType {
+        YES
+        NO
     }
